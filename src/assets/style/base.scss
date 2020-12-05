@@ -1,7 +1,16 @@
 body, html {
-    line-height: 1;
+    height: 100%;
     font-weight: 200;
     font-family: 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', 'arial', 'sans-serif';
+    overflow: hidden;
+}
+
+p {
+    margin: 0;
+}
+
+dd {
+    margin: 0;
 }
 
 .border-1px {
@@ -18,6 +27,10 @@ body, html {
     }
 }
 
+.border-1px--none:last-child::after {
+    display: none;
+}
+
 @media(-webkit-min-device-pixel-ratio: 1.5){
     .border-1px {
         &::after {
@@ -32,4 +45,52 @@ body, html {
             transform: scaleY(0.7);
         }
     }
+}
+
+.icon--weal {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    text-indent: -9999px;
+    background-size: 12px 12px;
+    background-repeat: no-repeat;
+}
+.icon--decrease {
+    background-image: url(../../assets/icon/decrease_1@2x.png);
+}
+
+.icon--discount {
+    background-image: url(../../assets/icon/discount_1@2x.png);
+}
+
+.icon--guarantee {
+    background-image: url(../../assets/icon/guarantee_1@2x.png);
+}
+
+.icon--invoice {
+    background-image: url(../../assets/icon/invoice_1@2x.png);
+}
+
+.icon--special {
+    background-image: url(../../assets/icon/special_1@2x.png);
+}
+
+.icon--decrease_3 {
+    background-image: url(../../assets/icon/decrease_3@2x.png);
+}
+
+.icon--discount_3 {
+    background-image: url(../../assets/icon/discount_3@2x.png);
+}
+
+.icon--guarantee_3 {
+    background-image: url(../../assets/icon/guarantee_3@2x.png);
+}
+
+.icon--invoice_3 {
+    background-image: url(../../assets/icon/invoice_3@2x.png);
+}
+
+.icon--special_3 {
+    background-image: url(../../assets/icon/special_3@2x.png);
 }
