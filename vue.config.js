@@ -1,4 +1,4 @@
-const mockData = require('./src/util/mock/data.json');
+const mockData = require('./tests/mock/data.json');
 
 module.exports = {
     devServer: {
@@ -15,5 +15,5 @@ module.exports = {
                 res.json(mockData.seller);
             });
         }
-    }
+    },
 }
