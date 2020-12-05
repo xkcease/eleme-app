@@ -1,24 +1,34 @@
-# eleme-app
+# 仿饿了么web app
 
-## Project setup
-```
+vue + vant 仿写饿了么web app
+
+## 技术栈
+- Vue 
+- Vue Router
+- Vuex 
+- Vue CLI
+- Vant
+- Sass 
+- ES6
+- Axios
+
+
+## 安装与使用
+```shell
+# 安装依赖
 npm install
+
+# 本地运行
+npm run serve 	
+
+# 打包
+npm run build		
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## 功能
+1. 导航栏
+2. 商品列表
+3. 购物车
+4. to be continued
 
-### Compiles and minifies for production
-```
-npm run build
-```
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
