@@ -1,3 +1,4 @@
+const path = require('path');
 const mockData = require('./tests/mock/data.json');
 
 module.exports = {
@@ -14,6 +15,12 @@ module.exports = {
             app.get('/api/seller', (req, res) => {
                 res.json(mockData.seller);
             });
-        }
+        },
     },
-}
+    pluginOptions: {
+        'style-resources-loader': {
+            preProcessor: 'scss',
+            patterns: [path.resolve(__dirname, './src/assets/scss/*.scss')],
+        },
+    },
+};
