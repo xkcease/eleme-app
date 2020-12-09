@@ -1,6 +1,6 @@
 <template>
     <div class="topbar">
-        <div class="topbar-seller">
+        <div class="topbar-seller" @click="changeOverlay">
             <img class="topbar-seller--bg" :src="seller.avatar" />
             <van-row class="topbar-seller__wrap" type="flex">
                 <van-col span="6">
@@ -15,15 +15,24 @@
                         {{ seller.description }} /
                         {{ seller.deliveryTime }}分钟送达
                     </p>
-                    <div v-if="seller.supports" class="topbar-seller__weal">
-                        <span
-                            class="icon--weal"
-                            :class="wealIcons[seller.supports[0].type]"
-                            >优惠</span
-                        >
-                        {{ seller.supports[0].description }}
-                        <div class="topbar-seller__weal--count">
-                            {{ seller.supports.length }}个
+                    <div class="topbar-seller__supports">
+                        <div class="topbar-seller__swipe">
+                            <ol ref="swipeOl">
+                                <li
+                                    v-for="(support, supportIndex) in seller.supports"
+                                    :key="supportIndex"
+                                >
+                                    <span
+                                        class="icon--supports"
+                                        :class="supportsClassMap[support.type]"
+                                        >优惠
+                                    </span>
+                                    {{ support.description }}
+                                </li>
+                            </ol>
+                        </div>
+                        <div class="topbar-seller__supports--count">
+                            {{ isSupports }}个
                             <span
                                 class="icon--more icon-keyboard_arrow_right"
                             ></span>
@@ -31,9 +40,9 @@
                     </div>
                 </van-col>
             </van-row>
-            <div class="topbar-seller__notice">
-                <span class="icon--notice"></span>
-                <p class="topbar-seller__notice--detail">
+            <div class="topbar-seller__bulletin">
+                <span class="icon--bulletin"></span>
+                <p class="topbar-seller__bulletin--detail">
                     {{ seller.bulletin }}
                 </p>
                 <span class="icon--more icon-keyboard_arrow_right"></span>
@@ -52,36 +61,39 @@
                 </li>
             </ul>
         </div>
+        <Overlay
+            v-show="isCover"
+            @changeOverlay="changeOverlay"
+            :supportsClassMap="supportsClassMap"
+        />
     </div>
 </template>
 
 <script>
-import '../../assets/style/icon.scss';
-import '../../assets/style/base.scss';
+import { mapState } from 'vuex';
+import Overlay from './Overlay';
 
 export default {
+    name: 'Topbar',
+    components: {
+        Overlay,
+    },
     data() {
         return {
-            seller: {},
-            wealIcons: [
-                'icon--decrease',
-                'icon--discount',
-                'icon--special',
-                'icon--invoice',
-                'icon--guarantte',
-            ],
             tabItemList: ['商品', '评价', '商家'],
             currentTabIndex: 0,
+            isCover: false,
         };
     },
-    computed: {},
+    computed: {
+        ...mapState(['seller']),
+        isSupports() {
+            return this.seller.supports && this.seller.supports.length;
+        },
+    },
     props: {
         sellerProp: Object,
-    },
-    watch: {
-        sellerProp() {
-            this.seller = this.sellerProp;
-        },
+        supportsClassMap: Array,
     },
     methods: {
         changeTab(index) {
@@ -95,10 +107,14 @@ export default {
                 this.$router.push({ name: 'seller' });
             }
         },
+        changeOverlay() {
+            this.isCover = !this.isCover;
+        },
     },
+    mounted() {},
+    beforeDestroy() {},
 };
 </script>
-
 
 <style lang="scss">
 .topbar {
@@ -109,6 +125,7 @@ export default {
     .topbar-seller__wrap {
         height: 68px;
     }
+
     .topbar-seller {
         background: rgba(7, 17, 27, 0.5);
         padding-top: 24px;
@@ -142,37 +159,55 @@ export default {
             background-size: 30px 18px;
             background-repeat: no-repeat;
 
-            @media screen and (-webkit-device-pixel-ratio: 2) {
-                background-image: url(../../assets/icon/brand@2x.png);
-            }
+            @include bg-img('/icon/brand', '30px');
+        }
 
-            @media screen and (-webkit-device-pixel-ratio: 3) {
-                background-image: url(../../assets/icon/brand@3x.png);
-            }
+        .icon--supports {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            text-indent: -9999px;
+            background-size: 12px 12px;
+            background-repeat: no-repeat;
+
+            @include supports(1, 12px);
         }
 
         .topbar-seller__name {
-            font-size: 16px;
+            font-size: $lg-size;
             font-weight: bold;
             line-height: 18px;
         }
 
         .topbar-seller__delivery {
-            font-size: 12px;
-            font-weight: 200;
+            font-size: $sm-size;
             line-height: 12px;
             margin-top: 8px;
         }
 
-        .topbar-seller__weal {
-            font-size: 10px;
-            font-weight: 200;
+        .topbar-seller__supports {
+            font-size: $xs-size;
             line-height: 12px;
             margin-top: 10px;
             position: relative;
+
+            ol {
+                li {
+                    width: 70%;
+                    height: 12px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                }
+            }
         }
 
-        .topbar-seller__weal--count {
+        .topbar-seller__swipe {
+            height: 12px;
+            overflow: hidden;
+        }
+
+        .topbar-seller__supports--count {
             display: inline-block;
             border-radius: 12px;
             width: 30px;
@@ -188,26 +223,25 @@ export default {
             vertical-align: middle;
         }
 
-        .topbar-seller__notice {
+        .topbar-seller__bulletin {
             display: flex;
             align-items: center;
             height: 28px;
             margin-top: 18px;
             padding-left: 12px;
-            background-color: rgba(7, 17, 27, 0.2);
-            font-size: 10px;
-            font-weight: 200;
+            background-color: eleblack(0.2);
+            font-size: $xs-size;
         }
 
-        .icon--notice {
+        .icon--bulletin {
             display: inline-block;
             width: 16px;
             height: 10px;
             background-size: 16px 10px;
-            background-image: url(../../assets/icon/bulletin@2x.png);
+            @include bg-img('/icon/bulletin', '16px');
         }
 
-        .topbar-seller__notice--detail {
+        .topbar-seller__bulletin--detail {
             display: inline-block;
             width: 90%;
             margin-left: 8px;
@@ -232,7 +266,7 @@ export default {
             display: block;
             width: 20px;
             height: 40px;
-            font-size: 14px;
+            font-size: $md-size;
             color: rgb(77, 85, 93);
             flex-grow: 1;
             text-align: center;
