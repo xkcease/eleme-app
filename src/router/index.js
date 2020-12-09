@@ -1,43 +1,33 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
 
 const routes = [
     {
-        path: "/",
-        name: "Home",
-        component: Home,
-        children: [
-            {
-                path: '/',
-                alias: '/goods',
-                name: 'goods',
-                component: () => import(/* webpackChunkName: "goods" */ '../components/Goods')
-            },
-            {
-                path: '/comment',
-                name: 'comment',
-                component: () => import(/* webpackChunkName: "comment" */ '../components/Comment')
-            },
-            {
-                path: '/seller',
-                name: 'seller',
-                component: () => import(/* webpackChunkName: "seller" */ '../components/Seller')
-            }
-        ]
+        path: '/',
+        alias: '/goods',
+        name: 'goods',
+        component: () =>
+            import(/* webpackChunkName: "goods" */ '../views/Goods'),
     },
     {
-        path: "/detail/:id",
-        name: "Detail",
+        path: '/comment',
+        name: 'comment',
         component: () =>
-            import(/* webpackChunkName: "detail" */ "../views/Detail.vue")
-    }
+            import(/* webpackChunkName: "comment" */ '../views/Comment'),
+    },
+    {
+        path: '/seller',
+        name: 'seller',
+        component: () =>
+            import(/* webpackChunkName: "seller" */ '../views/Seller'),
+    },
 ];
 
 const router = new VueRouter({
-    routes
+    mode: 'history',
+    routes,
 });
 
 export default router;

@@ -1,5 +1,5 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import Vue from 'vue';
+import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
@@ -9,6 +9,7 @@ export default new Vuex.Store({
         deliveryPrice: 0,
         minPrice: 0,
         amount: '',
+        seller: {},
     },
     mutations: {
         updateDeliveryPrice(state, payload) {
@@ -16,11 +17,12 @@ export default new Vuex.Store({
         },
         updateMinPrice(state, payload) {
             state.minPrice = payload.minPrice;
-        }
+        },
+        updateSeller(state, payload) {
+            state.seller = payload.seller;
+        },
         // updateTotal(state, payload) {
 
         // }
     },
-    actions: {},
-    modules: {}
 });
