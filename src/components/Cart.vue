@@ -8,7 +8,7 @@
         >
             <van-col class="cart-col cart__icon" span="4">
                 <van-badge :content="amount">
-                    <div class="cart-icon--wrap">
+                    <div class="cart-icon--wrap" @click="showPopup">
                         <span
                             class="icon-shopping_cart cart-icon"
                             :class="{ active: hasGoods }"
@@ -31,16 +31,43 @@
                 <span>￥{{ minPrice }} 起送</span>
             </van-col>
         </van-row>
+        <van-popup v-model="isShow" position="bottom">
+            <div class="">
+                <van-cell title="购物车" class="cart-list__title">
+                    <span class="cart-list--clear">清空</span>
+                </van-cell>
+                <van-cell-group>
+                    <van-cell title="蛋炒饭">
+                        <template>
+                            <span class="cart-list__price">￥ 10</span>
+                        </template>
+                        <template #extra>
+                            <div>
+                                <ItemControl
+                                    class="item-control--bottom"
+                                    :itemProp="{}"
+                                />
+                            </div>
+                        </template>
+                    </van-cell>
+                </van-cell-group>
+            </div>
+        </van-popup>
     </div>
 </template>
 
-
 <script>
 import { mapState } from 'vuex';
+import ItemControl from './ItemControl';
 
 export default {
+    components: {
+        ItemControl,
+    },
     data() {
-        return {};
+        return {
+            isShow: false,
+        };
     },
     computed: {
         ...mapState(['total', 'deliveryPrice', 'minPrice', 'amount']),
@@ -51,9 +78,13 @@ export default {
             return this.total >= this.minPrice ? true : false;
         },
     },
+    methods: {
+        showPopup() {
+            this.isShow = !this.isShow;
+        },
+    },
 };
 </script>
-
 
 <style lang="scss">
 .cart {
@@ -67,7 +98,12 @@ export default {
 
     .cart__wrap {
         height: 100%;
+        z-index: 5555;
+        position: absolute;
+        left: 0;
+        right: 0;
     }
+
     .cart-col {
         height: 100%;
         line-height: 52px;
@@ -118,9 +154,33 @@ export default {
         background-color: rgb(0, 160, 220);
         color: #fff;
     }
+
+    .cart-list__title {
+        background-color: #f3f5f7;
+        font-weight: 200;
+    }
+
+    .cart-list--clear {
+        color: rgb(0, 160, 220);
+        cursor: pointer;
+    }
+
+    .cart-list__price {
+        padding-right: 90px;
+        color: rgb(240, 20, 20);
+    }
 }
+
+.item-control--bottom {
+    bottom: 12px;
+}
+
 .van-badge--fixed {
     right: 12px;
     top: 6px;
+}
+
+.van-popup--bottom {
+    bottom: 52px;
 }
 </style>
