@@ -10,6 +10,8 @@
 
 <script>
 import './assets/css/icon.css';
+import './assets/scss/base.scss';
+
 import Cart from './components/Cart';
 import Topbar from './components/header/Topbar';
 import axios from 'axios';
