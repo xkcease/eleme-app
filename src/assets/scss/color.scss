@@ -1,5 +1,7 @@
 $e-red: rgb(240, 20, 20);
 $e-white: rgb(255, 255, 255);
+$e-yellow: rgb(255, 153, 0);
+$e-grey: rgb(147, 153, 159);
 
 @function eleblack($opacity: 1) {
     @return rgb(7, 17, 27, $opacity)
