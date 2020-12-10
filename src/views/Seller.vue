@@ -1,7 +1,7 @@
 <template>
     <wrap direction="column" ref="sellerWrap">
         <div class="seller">
-            <div class="seller__block--wrap border-1px">
+            <content-block class="border-1px--top-none">
                 <van-row type="flex" justify="space-between">
                     <van-col>
                         <h2 class="seller__title">{{ seller.name }}</h2>
@@ -53,9 +53,8 @@
                         </p>
                     </van-col>
                 </van-row>
-            </div>
-            <div class="seller__block--wrap border-1px--top border-1px">
-                <h2 class="seller__title">公告</h2>
+            </content-block>
+            <content-block title="公告">
                 <p class="seller__bulletin">{{ seller.bulletin }}</p>
                 <div class="seller__supports">
                     <ol>
@@ -73,12 +72,20 @@
                         </li>
                     </ol>
                 </div>
-            </div>
-            <div class="seller__block--wrap border-1px--top border-1px">
-                <h2 class="seller__title">商家实景</h2>
-            </div>
-            <div class="seller__block--wrap border-1px--top border-1px">
-                <h2 class="seller__title">商家信息</h2>
+            </content-block>
+            <content-block title="商家实景">
+                <div class="seller__scene" ref="sceneElem">
+                    <ul ref="ulElem">
+                        <li
+                            v-for="(pic, picIndex) in seller.pics"
+                            :key="picIndex"
+                        >
+                            <img :src="pic" class="seller__pic" />
+                        </li>
+                    </ul>
+                </div>
+            </content-block>
+            <content-block title="商家信息">
                 <div class="seller__info">
                     <ol>
                         <li
@@ -90,7 +97,7 @@
                         </li>
                     </ol>
                 </div>
-            </div>
+            </content-block>
         </div>
     </wrap>
 </template>
@@ -100,14 +107,17 @@ import Wrap from '../components/Wrap';
 import StarRating from '../components/StarRating';
 import { mapState } from 'vuex';
 import BScroll from 'better-scroll';
+import ContentBlock from '../components/ContentBlock.vue';
 
 export default {
     name: 'Seller',
     components: {
         Wrap,
         StarRating,
+        ContentBlock,
     },
     data() {
+        ContentBlock;
         return {
             isCollect: false,
             collectText: '收藏',
@@ -128,15 +138,40 @@ export default {
             this.isCollect = !this.isCollect;
             this.collectText = this.isCollect ? '已收藏' : '收藏';
         },
+        setSceneScroll() {
+            let offsetWidth = this.seller.pics.length * 126;
+            this.$refs.ulElem.style.width = offsetWidth + 'px';
+
+            if (!this.sceneScroll) {
+                this.sceneScroll = new BScroll(this.$refs.sceneElem, {
+                    scrollX: true,
+                    click: true,
+                });
+            } else {
+                this.sceneScroll.refresh();
+            }
+        },
     },
     mounted() {
-        this.sellerScroll = new BScroll(this.$refs.sellerWrap.$el, {
-            scrollY: true,
-            click: true,
-        });
+        if (!this.sellerScroll) {
+            this.sellerScroll = new BScroll(this.$refs.sellerWrap.$el, {
+                scrollY: true,
+                click: true,
+            });
+        } else {
+            this.sellerScroll.refresh();
+        }
 
-        console.log(this.sellerScroll);
-        console.log(this.$refs.wr);
+        if (this.seller.pics) {
+            this.setSceneScroll();
+        }
+    },
+    watch: {
+        seller() {
+            if (this.seller.pics) {
+                this.setSceneScroll();
+            }
+        },
     },
 };
 </script>
@@ -144,12 +179,6 @@ export default {
 <style lang="scss">
 .seller {
     background-color: #f3f5f7;
-
-    .seller__block--wrap {
-        background-color: #fff;
-        padding: 18px;
-        margin-bottom: 12px;
-    }
 
     .seller__title {
         font-size: $md-size;
@@ -172,6 +201,7 @@ export default {
         display: block;
         font-size: 24px;
         cursor: pointer;
+        color: #ccc;
     }
 
     .collected {
@@ -241,6 +271,22 @@ export default {
         }
     }
 
+    .seller__scene {
+        overflow: hidden;
+
+        ul {
+            li {
+                display: inline-block;
+                margin-right: 6px;
+            }
+        }
+    }
+
+    .seller__pic {
+        width: 120px;
+        height: 90px;
+    }
+
     .seller__info {
         ol {
             li {
@@ -261,13 +307,5 @@ export default {
             }
         }
     }
-}
-
-.right-line {
-    display: inline-block;
-    width: 1px;
-    background-color: eleblack(0.1);
-    vertical-align: middle;
-    margin-left: 6px;
 }
 </style>
