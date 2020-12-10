@@ -35,7 +35,7 @@
                     {{ seller.bulletin }}
                 </p>
             </div>
-            <span class="icon-close" @click="changeOverlay"></span>
+            <span class="icon-close" @click.stop="changeOverlay"></span>
         </div>
     </div>
 </template>

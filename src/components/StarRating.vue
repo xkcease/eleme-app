@@ -44,10 +44,6 @@ export default {
             return result;
         },
     },
-    created() {
-        console.log(this.score);
-        console.log(this.starItems);
-    },
 };
 </script>
 
