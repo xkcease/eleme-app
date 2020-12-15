@@ -5,7 +5,7 @@
                 <van-row type="flex" justify="space-between">
                     <van-col>
                         <h2 class="seller__title">{{ seller.name }}</h2>
-                        <StarRating :score="seller.score" :size="24" />
+                        <StarRating :score="seller.score" :size="20" />
                         <p class="seller__sales">
                             ({{ seller.ratingCount }})
                             <span class="seller__sales--count"

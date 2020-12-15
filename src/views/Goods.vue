@@ -34,6 +34,7 @@
                                     :desc="item.description"
                                     :price="item.price"
                                     :thumb="item.icon"
+                                    @click.stop="detailFood(item.name)"
                                 >
                                     <template #tags>
                                         <p style="margin-top: 8px">
@@ -43,7 +44,7 @@
                                         </p>
                                     </template>
                                     <template #footer>
-                                        <ItemControl :itemProp="item" />
+                                        <ItemControl :item="item" />
                                     </template>
                                 </van-card>
                             </li>
@@ -57,8 +58,9 @@
 
 <script>
 import axios from 'axios';
-import Wrap from '../components/Wrap';
+import { mapMutations } from 'vuex';
 import BScroll from 'better-scroll';
+import Wrap from '../components/Wrap';
 import ItemControl from '../components/ItemControl';
 
 export default {
@@ -70,31 +72,35 @@ export default {
         return {
             activeKey: 0,
             goods: [],
-            wealIcons: [
-                'icon--decrease_3',
-                'icon--discount_3',
-                'icon--special_3',
-                'icon--invoice_3',
-                'icon--guarantte_3',
+            supportsClassMap: [
+                'decrease',
+                'discount',
+                'special',
+                'invoice',
+                'guarantee',
             ],
             scrollY: 0,
             listHeight: [],
         };
     },
     methods: {
+        ...mapMutations(['updateGoods']),
         checkGoodType(type, goodIndex) {
             if (type < 0) {
                 return {
-                    [this.wealIcons[type]]: false,
+                    [this.supportsClassMap[type]]: false,
                     'icon--good': false,
                     active: this.currentIndex === goodIndex,
                 };
             }
             return {
-                [this.wealIcons[type]]: true,
+                [this.supportsClassMap[type]]: true,
                 'icon--good': true,
                 active: this.currentIndex === goodIndex,
             };
+        },
+        detailFood(name) {
+            this.$router.push({ name: 'food', params: { name } });
         },
         initScroll() {
             this.leftScroll = new BScroll(this.$refs.goodsSiderbar, {
@@ -108,7 +114,7 @@ export default {
                 probeType: 3,
             });
 
-            this.rightScroll.on('scroll', pos => {
+            this.rightScroll.on('scroll', (pos) => {
                 this.scrollY = Math.abs(Math.round(pos.y));
             });
         },
@@ -146,9 +152,10 @@ export default {
         },
     },
     beforeRouteEnter(to, from, next) {
-        axios.get('/api/goods').then(res => {
-            next(vm => {
+        axios.get('/api/goods').then((res) => {
+            next((vm) => {
                 vm.goods = res.data;
+                vm.updateGoods({ goods: res.data });
             });
         });
     },
@@ -207,6 +214,8 @@ export default {
     background-repeat: no-repeat;
     background-position: 13px;
     text-indent: 15px;
+
+    @include supports(3, 12px);
 
     div {
         margin-left: -15px;
