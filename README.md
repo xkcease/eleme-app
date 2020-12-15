@@ -29,6 +29,8 @@ npm run build
 1. 导航栏
 2. 商品列表
 3. 购物车
-4. to be continued
+4. 商家详情页
+5. 评价页
+6. to be continued
 
 
