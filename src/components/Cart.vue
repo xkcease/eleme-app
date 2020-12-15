@@ -5,10 +5,11 @@
             type="flex"
             justify="space-between"
             align="center"
+            @click="showPopup"
         >
             <van-col class="cart-col cart__icon" span="4">
                 <van-badge :content="amount">
-                    <div class="cart-icon--wrap" @click="showPopup">
+                    <div class="cart-icon--wrap">
                         <span
                             class="icon-shopping_cart cart-icon"
                             :class="{ active: hasGoods }"
@@ -32,20 +33,28 @@
             </van-col>
         </van-row>
         <van-popup v-model="isShow" position="bottom">
-            <div class="">
+            <div class="cart__list">
                 <van-cell title="购物车" class="cart-list__title">
-                    <span class="cart-list--clear">清空</span>
+                    <span class="cart-list--clear" @click="clearCart"
+                        >清空</span
+                    >
                 </van-cell>
                 <van-cell-group>
-                    <van-cell title="蛋炒饭">
+                    <van-cell
+                        v-for="item in cart"
+                        :key="item.name"
+                        :title="item.name"
+                    >
                         <template>
-                            <span class="cart-list__price">￥ 10</span>
+                            <span class="cart-list__price"
+                                >￥ {{ item.price }}</span
+                            >
                         </template>
                         <template #extra>
                             <div>
                                 <ItemControl
                                     class="item-control--bottom"
-                                    :itemProp="{}"
+                                    :item="item"
                                 />
                             </div>
                         </template>
@@ -57,7 +66,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters, mapMutations } from 'vuex';
 import ItemControl from './ItemControl';
 
 export default {
@@ -70,7 +79,8 @@ export default {
         };
     },
     computed: {
-        ...mapState(['total', 'deliveryPrice', 'minPrice', 'amount']),
+        ...mapState(['deliveryPrice', 'minPrice', 'cart']),
+        ...mapGetters(['total', 'amount']),
         hasGoods() {
             return this.amount > 0 ? true : false;
         },
@@ -79,6 +89,7 @@ export default {
         },
     },
     methods: {
+        ...mapMutations(['clearCart']),
         showPopup() {
             this.isShow = !this.isShow;
         },
@@ -127,6 +138,10 @@ export default {
         border-radius: 50%;
         background-color: rgb(255, 255, 255, 0.1);
         cursor: pointer;
+    }
+
+    .cart__text {
+        display: flex;
     }
 
     .cart__text--line {

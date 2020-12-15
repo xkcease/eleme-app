@@ -2,43 +2,41 @@
     <div class="item-control">
         <transition name="slide-fade">
             <span
-                v-if="item.count"
-                @touchstart="minusGood(item)"
+                v-if="getFoodCount(item.name)"
+                @touchstart.stop="minusGood(item)"
                 class="item-control__minus icon-remove_circle_outline"
             ></span>
         </transition>
-        <span v-if="item.count" class="item-control__count">{{
-            item.count
+        <span v-if="getFoodCount(item.name)" class="item-control__count">{{
+            getFoodCount(item.name)
         }}</span>
         <span
             class="item-control__add icon-add_circle"
-            @touchstart="addGood(item)"
+            @touchstart.stop="addGood(item)"
         ></span>
     </div>
 </template>
 
 <script>
+import { mapMutations, mapGetters } from 'vuex';
+
 export default {
     props: {
-        itemProp: Object,
+        item: Object,
     },
     data() {
-        return {
-            item: this.itemProp,
-        };
+        return {};
+    },
+    computed: {
+        ...mapGetters(['getFoodCount']),
     },
     methods: {
+        ...mapMutations(['insertFood', 'deleteFood']),
         addGood(item) {
-            if (!item.count) {
-                this.$set(item, 'count', 1);
-            } else {
-                item.count++;
-            }
+            this.insertFood({ name: item.name, price: item.price });
         },
         minusGood(item) {
-            if (item.count > 0) {
-                item.count--;
-            }
+            this.deleteFood({ name: item.name, price: item.price });
         },
     },
 };
