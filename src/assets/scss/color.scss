@@ -4,5 +4,13 @@ $e-yellow: rgb(255, 153, 0);
 $e-grey: rgb(147, 153, 159);
 
 @function eleblack($opacity: 1) {
-    @return rgb(7, 17, 27, $opacity)
+    @return rgb(7, 17, 27, $opacity);
+}
+
+@function eleblue($opacity: 1) {
+    @return rgb(0, 160, 220, $opacity);
+}
+
+@function elegrey($opacity: 1) {
+    @return rgb(77, 85, 93, $opacity);
 }
