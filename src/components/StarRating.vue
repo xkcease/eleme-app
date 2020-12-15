@@ -54,7 +54,11 @@ export default {
     text-align: center;
 
     @include stars(48, 24);
-    @include stars(36, 8);
-    @include stars(24, 2);
+    @include stars(30, 6);
+    @include stars(20, 2);
+
+    @media screen and (max-width: 360px) {
+        @include stars(30, 3);
+    }
 }
 </style>
