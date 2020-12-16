@@ -13,6 +13,9 @@ import {
     Popup,
     Cell,
     CellGroup,
+    Skeleton,
+    RadioGroup,
+    Radio,
 } from 'vant';
 
 Vue.use(Row);
@@ -25,6 +28,9 @@ Vue.use(Badge);
 Vue.use(Popup);
 Vue.use(Cell);
 Vue.use(CellGroup);
+Vue.use(Skeleton);
+Vue.use(Radio);
+Vue.use(RadioGroup);
 
 Vue.config.productionTip = false;
 

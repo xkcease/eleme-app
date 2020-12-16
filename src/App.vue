@@ -43,7 +43,7 @@ export default {
         ]),
     },
     mounted() {
-        axios.get('/api/seller').then(res => {
+        axios.get('/api/seller').then((res) => {
             this.sellerProp = res.data;
             this.updateDeliveryPrice({
                 deliveryPrice: this.sellerProp.deliveryPrice,
@@ -52,7 +52,7 @@ export default {
             this.updateSeller({ seller: this.sellerProp });
         });
 
-        axios.get('/api/ratings').then(res => {
+        axios.get('/api/ratings').then((res) => {
             this.ratingsProp = res.data;
         });
     },
