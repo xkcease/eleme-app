@@ -41,6 +41,8 @@
             icon-size="12px"
             direction="horizontal"
             class="comment__order"
+            :style="{ top: topValue }"
+            v-if="hasOrder"
         >
             <van-radio :name="0">按时间</van-radio>
             <van-radio :name="1">按评分</van-radio>
@@ -65,6 +67,14 @@ export default {
         orderMode: {
             type: Number,
             default: 0,
+        },
+        topValue: {
+            type: String,
+            default: '84px',
+        },
+        hasOrder: {
+            type: Boolean,
+            default: true,
         },
     },
     data() {
@@ -158,7 +168,6 @@ export default {
         font-size: $sm-size;
         position: absolute;
         right: 12px;
-        top: 84px;
     }
 
     .line {
