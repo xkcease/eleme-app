@@ -31,6 +31,6 @@ npm run build
 3. 购物车
 4. 商家详情页
 5. 评价页
-6. to be continued
+6. 商品详情页
 
 
